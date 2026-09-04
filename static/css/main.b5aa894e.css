@@ -16543,7 +16543,7 @@ blockquote:before {
     #hero-slide .carousel-item,
     .carousel-image,
     .hero-section-full-height {
-        min-height: 520px
+        min-height: 220px
     }
 
     #hero-slide .carousel-caption {
