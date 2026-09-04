@@ -1192,6 +1192,15 @@ function closeMobileMenu() {
             mobileCollapse.classList.remove('show');
         }
     }
+    // Reset hamburger icon state
+    document.querySelectorAll('.navbar-toggler, .mobile-nav-toggle').forEach(btn => {
+        btn.classList.add('collapsed');
+        btn.setAttribute('aria-expanded', 'false');
+        const icon = btn.querySelector('i');
+        if (icon) {
+            icon.className = 'bi bi-list';
+        }
+    });
 }
 
 // Navbara Ekibimiz Linki Ekleme
@@ -1224,8 +1233,8 @@ function addNavbarLink() {
                         <i class="bi bi-heart-fill"></i> Genç Gönüllü
                     </a>
 
-                    <a class="nav-link btn custom-btn bagis-btn-hover" data-route="bagis-yap" style="background: #f59e0b !important; color: white !important; border-radius: 20px; padding: 8px 16px !important; font-weight: 600; display:flex; align-items:center; justify-content:center; gap: 5px; font-size: 0.95rem; border: 1px solid #f59e0b; margin-left: 2px; line-height: 1; transition: all 0.3s ease;" href="/#bagis-yap" onclick="event.preventDefault(); closeMobileMenu(); window.navigateTo('bagis-yap');">
-                        Bağış Yap
+                    <a class="nav-link btn custom-btn bagis-btn-hover" data-route="bagis-yap" style="background: #f59e0b !important; color: white !important; border-radius: 20px; padding: 8px 16px !important; font-weight: 600; display:flex; align-items:center; justify-content:center; gap: 5px; font-size: 0.95rem; border: 1px solid #f59e0b; line-height: 1; transition: all 0.3s ease;" href="/#bagis-yap" onclick="event.preventDefault(); closeMobileMenu(); window.navigateTo('bagis-yap');">
+                        <i class="bi bi-heart-fill"></i> Bağış Yap
                     </a>
                     
                     <style>
@@ -1355,44 +1364,41 @@ function fixAddressLinksAndTexts() {
     const addressText = "Zal Mahmut Paşa külliyesi Nişanca mah., Eyüb, İstanbul, Türkiye";
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Zal+Mahmut+Pa%C5%9Fa+k%C3%BClliyesi+Ni%C5%9Fanca+mah.+Eyub+Istanbul+Turkey";
 
-    // 1. Any element containing beylikdüzü/beylikduzu text
+    // 1. Replace old Beylikdüzü text with official Eyüpsultan address
     document.querySelectorAll('*').forEach(el => {
         if (el.children.length === 0 && el.textContent) {
             const txt = el.textContent.toLowerCase();
-            if (txt.includes('beylikdüzü') || txt.includes('beylikduzu') || txt.includes('beylikduzu/istanbul') || txt.includes('beylikdüzü / istanbul')) {
-                if (el.textContent !== addressText) {
-                    el.textContent = addressText;
-                }
+            if (txt.includes('beylikdüzü') || txt.includes('beylikduzu')) {
+                el.textContent = addressText;
             }
         }
     });
 
-    document.querySelectorAll('.site-header a, header a, .top-bar a, .top-header a, footer a, .contact-info a, section a, .contact-info p, .contact-info span, p, span, li').forEach(el => {
-        const text = el.textContent.toLowerCase();
-        const html = el.innerHTML;
+    // 2. Fix <a> tags for address and email
+    document.querySelectorAll('a').forEach(a => {
+        const text = a.textContent.toLowerCase();
+        const href = (a.getAttribute('href') || '').toLowerCase();
+        const html = a.innerHTML;
 
-
-        if (html.includes('bi-geo-alt') || text.includes('adres') || text.includes('istanbul, türkiye') || text.includes('eyub') || text.includes('eyüb') || text.includes('nişanca') || text.includes('beylik')) {
-            if (el.tagName === 'A') {
-                el.setAttribute('href', mapsUrl);
-                el.setAttribute('target', '_blank');
-                el.setAttribute('rel', 'noopener noreferrer');
-                const icon = el.querySelector('i');
-                if (icon) {
-                    el.innerHTML = icon.outerHTML + ' ' + addressText;
-                } else if (el.children.length === 0) {
-                    el.textContent = addressText;
-                }
-            } else if (el.children.length <= 1 && !el.closest('form')) {
-                const icon = el.querySelector('i');
-                if (icon) {
-                    el.innerHTML = icon.outerHTML + ' <a href="' + mapsUrl + '" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">' + addressText + '</a>';
-                }
-            }
+        if (html.includes('bi-geo-alt') || href.includes('maps') || text.includes('zal mahmut') || text.includes('eyüb') || text.includes('eyub') || text.includes('nişanca')) {
+            a.setAttribute('href', mapsUrl);
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
         }
-        if (html.includes('bi-envelope') || text.includes('info@') || text.includes('@yuzag.org')) {
-            if (el.tagName === 'A' && (!el.getAttribute('href') || !el.getAttribute('href').startsWith('mailto:'))) {
-                el.setAttribute('href', 'mailto:info@yuzag.org');
+
+        if (html.includes('bi-envelope') || href.includes('mailto') || text.includes('info@') || text.includes('@yuzag.org')) {
+            a.setAttribute('href', 'mailto:info@yuzag.org');
+        }
+    });
+
+    // 3. Convert standalone text nodes of email or address into clickable <a> tags safely
+    document.querySelectorAll('p, span, li, small, td').forEach(el => {
+        if (el.children.length === 0 && el.parentElement && el.parentElement.tagName !== 'A') {
+            const txt = el.textContent.trim();
+            if (txt.includes('info@yuzag.org') || txt.includes('info@company.com') || txt.includes('info@yourgmail.com')) {
+                el.innerHTML = `<a href="mailto:info@yuzag.org" style="color:inherit; text-decoration:underline;">info@yuzag.org</a>`;
+            } else if (txt.includes('Zal Mahmut Paşa') || txt.includes('Nişanca mah.')) {
+                el.innerHTML = `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">${txt}</a>`;
             }
         }
     });
@@ -1637,21 +1643,70 @@ document.addEventListener('keydown', (e) => {
             e.preventDefault();
         }
     }
+
+    const isPhoneInput = e.target.matches('[type="tel"], [name="tel"], [name="phone"], [name="refTel1"], [name="refTel2"], .iti input') ||
+        (e.target.placeholder && (e.target.placeholder.includes('05') || e.target.placeholder.toLowerCase().includes('telefon') || e.target.placeholder.toLowerCase().includes('5xx')));
+    if (isPhoneInput) {
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+        if (!allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+            let currentDigits = e.target.value.replace(/\D/g, '');
+            if (currentDigits.startsWith('0')) currentDigits = currentDigits.substring(1);
+            if (currentDigits.length >= 10 && ((e.key >= '0' && e.key <= '9') || (e.code && e.code.startsWith('Numpad')))) {
+                e.preventDefault();
+            }
+        }
+    }
 });
 
 document.addEventListener('input', (e) => {
     if (!e.target) return;
 
-    // 1. Ad Soyad: Rakamları anında temizle (Paste / Yapıştırma ve Mobil klavye koruması)
-    if (e.target.matches('[name="adSoyad"], [name="ad_soyad"], [name="name"]') ||
-        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('ad'))) {
-        e.target.value = e.target.value.replace(/[0-9]/g, '');
+    // 1. Ad Soyad & Referans Adı: Sadece harf ve boşluk (Rakamlar ve özel semboller anında temizlenir)
+    if (e.target.matches('[name="adSoyad"], [name="ad_soyad"], [name="name"], [name="refAd1"], [name="refAd2"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('adınız'))) {
+        e.target.value = e.target.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '');
     }
 
-    // 2. Telefon: Rakam dışı karakterleri engelle
-    if (e.target.matches('[type="tel"]') || e.target.name === 'tel' || e.target.name === 'phone' ||
-        (e.target.placeholder && (e.target.placeholder.includes('05') || e.target.placeholder.toLowerCase().includes('telefon')))) {
-        e.target.value = e.target.value.replace(/[^0-9\s\+\-\(\)]/g, '').slice(0, 15);
+    // 2. Yabancı Dil alanları: Sadece harf ve boşluk (Rakamlar ve *, -, +, / gibi simgeler anında temizlenir)
+    if (e.target.matches('[name="dil1"], [name="dil2"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('dil'))) {
+        e.target.value = e.target.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '');
+    }
+
+    // 3. Yaşadığınız il alanı: Sadece harf ve boşluk (Rakamlar ve *, -, +, / gibi simgeler anında temizlenir)
+    if (e.target.matches('[name="il"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('il'))) {
+        e.target.value = e.target.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '');
+    }
+
+    // 4. Okul alanı: Özel semboller (*, +, =, <, >, !, #, $, %, ^, &, *) temizlenir
+    if (e.target.matches('[name="okul"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('okul'))) {
+        e.target.value = e.target.value.replace(/[*+=<>!#$%^&*()]/g, '');
+    }
+
+    // 5. Mail alanı: Geçersiz semboller (+, *, /, vb. ve boşluk) anında temizlenir
+    if (e.target.matches('[type="email"], [name="email"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('eposta'))) {
+        e.target.value = e.target.value.replace(/[^a-zA-Z0-9@._-]/g, '').toLowerCase();
+    }
+
+    // 6. TC Kimlik No: Sadece rakam ve max 11 hane
+    if (e.target.matches('[name="tc"]')) {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 11);
+    }
+
+    // 7. Telefon: Sadece rakam kabul et, başındaki 0'ı temizle ve Türkiye için en fazla 10 hane kabul et (ör: 5374086744)
+    if (e.target.matches('[type="tel"], [name="tel"], [name="phone"], [name="refTel1"], [name="refTel2"], .iti input') ||
+        (e.target.placeholder && (e.target.placeholder.includes('05') || e.target.placeholder.toLowerCase().includes('telefon') || e.target.placeholder.toLowerCase().includes('5xx')))) {
+        let val = e.target.value.replace(/\D/g, '');
+        if (val.startsWith('0')) {
+            val = val.substring(1);
+        }
+        if (val.length > 10) {
+            val = val.slice(0, 10);
+        }
+        e.target.value = val;
     }
 });
 
@@ -1977,8 +2032,11 @@ function initIntlTelInputs() {
 
     const phoneInputs = document.querySelectorAll('input[type="tel"], input[name="tel"], input[name="phone"], input[name="refTel1"], input[name="refTel2"], input[placeholder*="Telefon"], input[placeholder*="telefon"]');
     phoneInputs.forEach(input => {
-        // Enforce left padding inline so text never overlaps dial code
-        input.style.setProperty('padding-left', '95px', 'important');
+        input.setAttribute('maxlength', '10');
+        input.setAttribute('inputmode', 'numeric');
+        input.setAttribute('pattern', '[0-9]*');
+        input.setAttribute('placeholder', '5xx xxx xx xx');
+        input.style.setProperty('padding-left', '15px', 'important');
 
         if (!input.dataset.itiInitialized) {
             input.dataset.itiInitialized = 'true';
@@ -1989,7 +2047,8 @@ function initIntlTelInputs() {
                     separateDialCode: true,
                     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
                 });
-                input.style.setProperty('padding-left', '95px', 'important');
+                input.setAttribute('maxlength', '10');
+                input.style.setProperty('padding-left', '15px', 'important');
             } catch (e) {
                 // fallback
             }
