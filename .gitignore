@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+yuzag-backend/vendor/
+
+# Helper & Scratch Scripts
+*.js
+!rebuild_custom_projects.js
+!assets/js/*.js
+!static/js/*.js
+*.txt
+*.json
+!package.json
+!package-lock.json
+!asset-manifest.json
+
+# Archives & Large files
+*.zip
+yuzag-backend.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs & Temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+yuzag-backend/.env
