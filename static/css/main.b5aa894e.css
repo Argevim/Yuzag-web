@@ -15494,12 +15494,11 @@ strong {
 }
 
 #hero-slide .carousel-caption {
-    background: #fff;
-    background: var(--white-color);
+    background: transparent !important;
     bottom: -1px;
     clip-path: polygon(100% 100%, 100% 150px, 0 100%);
     color: #5a6f80;
-    color: var(--secondary-color);
+    color: #fff;
     left: auto;
     min-height: 680px;
     min-width: 680px;
@@ -15520,6 +15519,10 @@ strong {
 @media (max-width:768px) {
     .carousel-image {
         height: 200px
+    }
+
+    #hero-slide .carousel-caption {
+        color: #fff !important;
     }
 }
 
