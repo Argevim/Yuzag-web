@@ -353,7 +353,7 @@ function injectCustomViews() {
                 <h2 class="custom-section-title" style="margin-bottom: 30px;">Yönetim Kadromuz</h2>
                 <div class="team-grid" id="full-team-grid"></div>
 
-                <!-- Organizasyon Şeması Buraya Taşındı -->
+                <!-- Organizasyon Şeması Şimdilik Yoruma Alındı
                 <div id="team-org-chart-container" style="margin-top: 60px;">
                     <h2 class="custom-section-title" style="margin-bottom: 30px; text-align:center;">Organizasyon Şeması</h2>
                     <div class="org-chart-wrapper">
@@ -385,6 +385,7 @@ function injectCustomViews() {
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
 
@@ -1300,10 +1301,10 @@ function initSwipers() {
                 breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
             });
         }
-    } catch (e) {}
+    } catch (e) { }
 }
 
-window.filterAnnouncements = function(status, btnElement) {
+window.filterAnnouncements = function (status, btnElement) {
     if (btnElement) {
         const parent = btnElement.parentElement;
         if (parent) {
@@ -1313,7 +1314,7 @@ window.filterAnnouncements = function(status, btnElement) {
     }
     const wrapper = document.getElementById('announcements-swiper-wrapper');
     if (!wrapper) return;
-    
+
     let filtered = announcementsData;
     if (status && status !== 'Tümü') {
         filtered = announcementsData.filter(a => a.status === status || a.badge === status || (a.status && a.status.toLowerCase().includes(status.toLowerCase())));
@@ -1322,7 +1323,7 @@ window.filterAnnouncements = function(status, btnElement) {
     initSwipers();
 };
 
-window.filterProjects = function(status, btnElement) {
+window.filterProjects = function (status, btnElement) {
     if (btnElement) {
         const parent = btnElement.parentElement;
         if (parent) {
@@ -1332,7 +1333,7 @@ window.filterProjects = function(status, btnElement) {
     }
     const wrapper = document.getElementById('projects-swiper-wrapper');
     if (!wrapper) return;
-    
+
     let filtered = projectsData;
     if (status && status !== 'Tümü') {
         filtered = projectsData.filter(p => p.status === status || (p.status && p.status.toLowerCase().includes(status.toLowerCase())));
@@ -1342,21 +1343,27 @@ window.filterProjects = function(status, btnElement) {
 };
 
 function fixAddressLinksAndTexts() {
-    const addressText = "Zal Mahmut Paşa külliyesi Nişanca mah., Eyub, Istanbul, Turkey";
+    const addressText = "Zal Mahmut Paşa külliyesi Nişanca mah., Eyüb, İstanbul, Türkiye";
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Zal+Mahmut+Pa%C5%9Fa+k%C3%BClliyesi+Ni%C5%9Fanca+mah.+Eyub+Istanbul+Turkey";
+
+    // 1. Any element containing beylikdüzü/beylikduzu text
+    document.querySelectorAll('*').forEach(el => {
+        if (el.children.length === 0 && el.textContent) {
+            const txt = el.textContent.toLowerCase();
+            if (txt.includes('beylikdüzü') || txt.includes('beylikduzu') || txt.includes('beylikduzu/istanbul') || txt.includes('beylikdüzü / istanbul')) {
+                if (el.textContent !== addressText) {
+                    el.textContent = addressText;
+                }
+            }
+        }
+    });
 
     document.querySelectorAll('.site-header a, header a, .top-bar a, .top-header a, footer a, .contact-info a, section a, .contact-info p, .contact-info span, p, span, li').forEach(el => {
         const text = el.textContent.toLowerCase();
         const html = el.innerHTML;
 
-        if (html.includes('bi-youtube') || text.includes('youtube')) {
-            if (el.tagName === 'A') {
-                el.setAttribute('href', 'https://www.youtube.com/@yuzag_hareketi');
-                el.setAttribute('target', '_blank');
-                el.setAttribute('rel', 'noopener noreferrer');
-            }
-        }
-        if (html.includes('bi-geo-alt') || text.includes('adres') || text.includes('istanbul, türkiye') || text.includes('eyub') || text.includes('nişanca')) {
+
+        if (html.includes('bi-geo-alt') || text.includes('adres') || text.includes('istanbul, türkiye') || text.includes('eyub') || text.includes('eyüb') || text.includes('nişanca') || text.includes('beylik')) {
             if (el.tagName === 'A') {
                 el.setAttribute('href', mapsUrl);
                 el.setAttribute('target', '_blank');
@@ -1390,11 +1397,11 @@ function fixAllPageLinks() {
     document.querySelectorAll('a, button, .btn').forEach(a => {
         const text = a.textContent.trim().toLowerCase();
         const href = a.getAttribute('href');
-        
+
         if (text.includes('destek ol') || text.includes('katıl') || text.includes('bize katıl') || text.includes('gönüllü katıl')) {
             if (!a.classList.contains('bagis-btn-hover') && !text.includes('bağış')) {
                 a.setAttribute('href', '/#gonullu-ol');
-                a.onclick = function(e) {
+                a.onclick = function (e) {
                     e.preventDefault();
                     closeMobileMenu();
                     window.navigateTo('gonullu-ol');
@@ -1403,19 +1410,19 @@ function fixAllPageLinks() {
         }
 
         if (!href) return;
-        
+
         if (href === '/volunteer' || href === '#volunteer' || href === 'volunteer') {
             a.setAttribute('href', '/#gonullu-ol');
-            a.onclick = function(e) { e.preventDefault(); closeMobileMenu(); window.navigateTo('gonullu-ol'); };
+            a.onclick = function (e) { e.preventDefault(); closeMobileMenu(); window.navigateTo('gonullu-ol'); };
         } else if (href === '/works' || href === '#works' || href === 'works') {
             a.setAttribute('href', '/#projeler');
-            a.onclick = function(e) { e.preventDefault(); closeMobileMenu(); window.navigateTo('projeler'); };
+            a.onclick = function (e) { e.preventDefault(); closeMobileMenu(); window.navigateTo('projeler'); };
         } else if (href === '/genis-aile' || href === '#genis-aile') {
             a.setAttribute('href', '/#proje-8');
-            a.onclick = function(e) { e.preventDefault(); closeMobileMenu(); window.openDetail(8, 'project'); };
+            a.onclick = function (e) { e.preventDefault(); closeMobileMenu(); window.openDetail(8, 'project'); };
         } else if (href === '/' || href === '/#') {
             if (a.classList.contains('navbar-brand') || a.classList.contains('copyright-text')) {
-                a.onclick = function(e) { e.preventDefault(); closeMobileMenu(); window.scrollToSection('root'); };
+                a.onclick = function (e) { e.preventDefault(); closeMobileMenu(); window.scrollToSection('root'); };
             }
         }
     });
@@ -1486,38 +1493,59 @@ window.openDetail = function (id, type) {
     window.navigateTo((type === 'announcement' || type === 'duyuru' ? 'duyuru-' : 'proje-') + id);
 };
 
-window.handleFormSubmit = function(event, formType) {
+window.handleFormSubmit = function (event, formType) {
     if (event) event.preventDefault();
-    
-    const form = event ? event.target : null;
+
+    const form = event ? (event.target || event.srcElement) : null;
     if (!form) return;
 
-    const nameInput = form.querySelector('[name="adSoyad"], [name="ad_soyad"], [name="name"]');
-    const emailInput = form.querySelector('[type="email"], [name="email"]');
-    const telInput = form.querySelector('[type="tel"], [name="tel"], [name="phone"]');
+    const nameInput = form.querySelector('[name="adSoyad"], [name="ad_soyad"], [name="name"], input[placeholder*="Ad"], input[placeholder*="ad"]');
+    const emailInput = form.querySelector('[type="email"], [name="email"], input[placeholder*="E-posta"], input[placeholder*="email"]');
+    const telInput = form.querySelector('[type="tel"], [name="tel"], [name="phone"], input[placeholder*="05"], input[placeholder*="Telefon"]');
     const msgInput = form.querySelector('textarea, [name="mesaj"], [name="message"]');
+    const kvkkInput = form.querySelector('input[name="kvkk"], input[type="checkbox"][required]');
 
     let errors = [];
 
+    // 1. Ad Soyad Validasyonu (Sadece sayı girilemez, en az 3 karakter)
     if (nameInput) {
         const val = nameInput.value.trim();
-        if (!val || val.length < 2) errors.push("Ad soyad en az 2 karakter olmalıdır.");
-    }
-    if (emailInput) {
-        const val = emailInput.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!val || !emailRegex.test(val)) errors.push("Geçerli bir e-posta adresi giriniz.");
-    }
-    if (telInput) {
-        const val = telInput.value.trim();
-        const phoneRegex = /^[0-9\s\+\-\(\)]{10,15}$/;
-        if (telInput.hasAttribute('required') && (!val || !phoneRegex.test(val))) {
-            errors.push("Geçerli bir telefon numarası giriniz (10-15 hane).");
+        const hasLetters = /[a-zA-ZçğıöşüÇĞİÖŞÜ]/.test(val);
+        const isPureNumbers = /^\d+$/.test(val);
+        if (!val || val.length < 3 || isPureNumbers || !hasLetters) {
+            errors.push("Lütfen geçerli bir Ad Soyad giriniz (en az 3 harf içermelidir).");
         }
     }
+
+    // 2. E-posta Validasyonu
+    if (emailInput) {
+        const val = emailInput.value.trim();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!val || !emailRegex.test(val)) {
+            errors.push("Lütfen geçerli bir e-posta adresi giriniz (örnek: isim@domain.com).");
+        }
+    }
+
+    // 3. Telefon Validasyonu (En az 10 rakam)
+    if (telInput) {
+        const rawVal = telInput.value.trim();
+        const digitsOnly = rawVal.replace(/\D/g, '');
+        if (!rawVal || digitsOnly.length < 10 || digitsOnly.length > 13) {
+            errors.push("Lütfen geçerli bir telefon numarası giriniz (örnek: 05xx xxx xx xx).");
+        }
+    }
+
+    // 4. Mesaj / Motivasyon Validasyonu
     if (msgInput) {
         const val = msgInput.value.trim();
-        if (!val || val.length < 10) errors.push("Mesajınız en az 10 karakter olmalıdır.");
+        if (!val || val.length < 10) {
+            errors.push("Lütfen mesajınızı veya açıklamanızı en az 10 karakter olarak yazınız.");
+        }
+    }
+
+    // 5. KVKK Onay Kutusu Validasyonu
+    if (kvkkInput && !kvkkInput.checked) {
+        errors.push("Lütfen KVKK Aydınlatma Metnini okuduğunuzu onaylayınız.");
     }
 
     const toastContainer = document.getElementById('custom-toast-container') || document.body;
@@ -1541,7 +1569,7 @@ window.handleFormSubmit = function(event, formType) {
 
     if (errors.length > 0) {
         showToast(errors[0], false);
-        return;
+        return false;
     }
 
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -1561,28 +1589,59 @@ window.handleFormSubmit = function(event, formType) {
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data && data.status === 'success') {
-            showToast(data.message || 'Mesajınız başarıyla iletilmiştir. Teşekkür ederiz.', true);
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.status === 'success') {
+                showToast(data.message || 'Mesajınız başarıyla iletilmiştir. Teşekkür ederiz.', true);
+                form.reset();
+            } else {
+                showToast(data.message || 'Mesajınız başarıyla iletilmiştir. Teşekkür ederiz.', true);
+                form.reset();
+            }
+        })
+        .catch(() => {
+            showToast('Mesajınız başarıyla iletilmiştir. Teşekkür ederiz.', true);
             form.reset();
-        } else {
-            showToast(data.message || 'Başvurunuz alındı. Teşekkür ederiz.', true);
-            form.reset();
-        }
-    })
-    .catch(() => {
-        showToast('Başvurunuz başarıyla alınmıştır. Teşekkür ederiz.', true);
-        form.reset();
-    })
-    .finally(() => {
-        if (submitBtn) submitBtn.disabled = false;
-    });
+        })
+        .finally(() => {
+            if (submitBtn) submitBtn.disabled = false;
+        });
+
+    return false;
 };
 
-// Input Formatting (Prevent typing invalid chars on phone input real-time)
+// Global Form Submit Capture Listener
+document.addEventListener('submit', function (e) {
+    if (e.target && e.target.tagName === 'FORM') {
+        window.handleFormSubmit(e);
+    }
+}, true);
+
+// Real-time Input Formatting & Validation (Prevent invalid characters)
+document.addEventListener('keydown', (e) => {
+    if (!e.target) return;
+    const isNameInput = e.target.matches('[name="adSoyad"], [name="ad_soyad"], [name="name"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('ad'));
+    if (isNameInput) {
+        // Rakamların (0-9 ve Numpad) yazılmasını tuş basıldığı anda engelle
+        if ((e.key >= '0' && e.key <= '9') || (e.code && e.code.startsWith('Numpad'))) {
+            e.preventDefault();
+        }
+    }
+});
+
 document.addEventListener('input', (e) => {
-    if (e.target && (e.target.matches('[type="tel"]') || e.target.name === 'tel' || e.target.name === 'phone')) {
+    if (!e.target) return;
+
+    // 1. Ad Soyad: Rakamları anında temizle (Paste / Yapıştırma ve Mobil klavye koruması)
+    if (e.target.matches('[name="adSoyad"], [name="ad_soyad"], [name="name"]') ||
+        (e.target.placeholder && e.target.placeholder.toLowerCase().includes('ad'))) {
+        e.target.value = e.target.value.replace(/[0-9]/g, '');
+    }
+
+    // 2. Telefon: Rakam dışı karakterleri engelle
+    if (e.target.matches('[type="tel"]') || e.target.name === 'tel' || e.target.name === 'phone' ||
+        (e.target.placeholder && (e.target.placeholder.includes('05') || e.target.placeholder.toLowerCase().includes('telefon')))) {
         e.target.value = e.target.value.replace(/[^0-9\s\+\-\(\)]/g, '').slice(0, 15);
     }
 });
@@ -1599,7 +1658,7 @@ function updateActiveMenuState(route) {
         const text = el.textContent.trim().toLowerCase();
         const rAttr = el.getAttribute('data-route');
 
-        if (rAttr === targetKey || 
+        if (rAttr === targetKey ||
             (targetKey === 'anasayfa' && text === 'anasayfa') ||
             (targetKey === 'duyurular' && (text.includes('duyuru') || text.includes('tüm duyurular'))) ||
             (targetKey === 'bilgilendiriyor' && (text.includes('bilgilendiriyor') || text.includes('tüm videolar'))) ||
@@ -1615,9 +1674,9 @@ function updateActiveMenuState(route) {
 }
 
 function handleRouting() {
-    if (window.location.pathname.startsWith('/backend') || 
-        window.location.pathname.startsWith('/admin') || 
-        window.location.pathname.startsWith('/yonetim-paneli') || 
+    if (window.location.pathname.startsWith('/backend') ||
+        window.location.pathname.startsWith('/admin') ||
+        window.location.pathname.startsWith('/yonetim-paneli') ||
         window.location.pathname.startsWith('/api')) {
         return;
     }
@@ -1660,17 +1719,17 @@ function handleRouting() {
         bagis: document.getElementById('custom-bagis-yap-view')
     };
 
-    const isDetailPage = route === 'ekibimiz' || 
-                         route === 'bilgilendiriyor' || 
-                         route === 'sosyalmedya' || 
-                         route === 'projeler' || 
-                         route === 'duyurular' || 
-                         route === 'gonullu-ol' || 
-                         route === 'genc-gonullu-ol' || 
-                         route === 'bagis-yap' || 
-                         route.startsWith('proje-') || 
-                         route.startsWith('duyuru-') || 
-                         route.startsWith('bilgi-');
+    const isDetailPage = route === 'ekibimiz' ||
+        route === 'bilgilendiriyor' ||
+        route === 'sosyalmedya' ||
+        route === 'projeler' ||
+        route === 'duyurular' ||
+        route === 'gonullu-ol' ||
+        route === 'genc-gonullu-ol' ||
+        route === 'bagis-yap' ||
+        route.startsWith('proje-') ||
+        route.startsWith('duyuru-') ||
+        route.startsWith('bilgi-');
 
     if (appNode) {
         Array.from(appNode.children).forEach(child => {
@@ -1772,7 +1831,7 @@ function renderTeamPage() {
     const grid = document.getElementById('team-grid') || document.getElementById('full-team-grid');
     if (grid && typeof teamData !== 'undefined') {
         grid.innerHTML = teamData.map(t => `
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4" style="margin: 0px 20px;">
                 <div class="team-card text-center h-100 d-flex flex-column justify-content-center" style="background:#fff; padding:30px 20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid #14b8a6; transition: transform 0.3s ease;">
                     <h5 style="font-weight:700; color:#0f172a; margin-bottom:8px; font-size:1.1rem;">${t.name}</h5>
                     <p style="color:#14b8a6; font-weight:600; font-size:0.88rem; margin:0;">${t.role}</p>
@@ -1906,8 +1965,11 @@ function injectGoogleMapSection() {
 function initIntlTelInputs() {
     if (typeof window.intlTelInput === 'undefined') return;
 
-    const phoneInputs = document.querySelectorAll('input[type="tel"], input[name="tel"], input[name="phone"], input[name="refTel1"], input[name="refTel2"]');
+    const phoneInputs = document.querySelectorAll('input[type="tel"], input[name="tel"], input[name="phone"], input[name="refTel1"], input[name="refTel2"], input[placeholder*="Telefon"], input[placeholder*="telefon"]');
     phoneInputs.forEach(input => {
+        // Enforce left padding inline so text never overlaps dial code
+        input.style.setProperty('padding-left', '95px', 'important');
+
         if (!input.dataset.itiInitialized) {
             input.dataset.itiInitialized = 'true';
             try {
@@ -1917,6 +1979,7 @@ function initIntlTelInputs() {
                     separateDialCode: true,
                     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
                 });
+                input.style.setProperty('padding-left', '95px', 'important');
             } catch (e) {
                 // fallback
             }
@@ -1924,38 +1987,71 @@ function initIntlTelInputs() {
     });
 }
 
-// 7. Eklenti Başlatıcı (Plugin Init)
-function initProjectsPlugin() {
-    console.log("YÜZAG Projeler Eklentisi Başlıyor...");
-    
-    // Run immediately to inject views & footer
+function fixKvkkLayout() {
+    document.querySelectorAll('input[name="kvkk"], input[type="checkbox"]').forEach(input => {
+        const label = input.closest('label') || input.parentElement;
+        if (label) {
+            label.style.setProperty('display', 'flex', 'important');
+            label.style.setProperty('flex-direction', 'row', 'important');
+            label.style.setProperty('align-items', 'flex-start', 'important');
+            label.style.setProperty('justify-content', 'flex-start', 'important');
+            label.style.setProperty('text-align', 'left', 'important');
+            label.style.setProperty('gap', '12px', 'important');
+            label.style.setProperty('width', '100%', 'important');
+            label.style.setProperty('margin-top', '12px', 'important');
+            label.style.setProperty('margin-bottom', '20px', 'important');
+
+            input.style.setProperty('width', '20px', 'important');
+            input.style.setProperty('height', '20px', 'important');
+            input.style.setProperty('min-width', '20px', 'important');
+            input.style.setProperty('flex-shrink', '0', 'important');
+            input.style.setProperty('margin', '3px 0 0 0', 'important');
+        }
+    });
+}
+
+function tryInjectEverything() {
     injectCustomViews();
     injectCustomFooter();
     injectGoogleMapSection();
     initIntlTelInputs();
-    addNavbarLink();
-    handleRouting();
+    fixAddressLinksAndTexts();
+    fixKvkkLayout();
 
+    if (!document.getElementById('custom-projects-section')) {
+        injectSections();
+        addNavbarLink();
+        handleRouting();
+    }
+}
+
+// 7. Eklenti Başlatıcı (Plugin Init)
+function initProjectsPlugin() {
+    console.log("YÜZAG Projeler Eklentisi Başlıyor...");
+
+    tryInjectEverything();
+
+    // Retry periodically for React async rendering (250ms x 20 = 5 seconds)
+    let attempts = 0;
+    const intervalTimer = setInterval(() => {
+        attempts++;
+        tryInjectEverything();
+        if (document.getElementById('custom-projects-section') || attempts > 20) {
+            clearInterval(intervalTimer);
+        }
+    }, 250);
+
+    // MutationObserver to ensure SPA routing / dynamic changes preserve custom sections
     const rootNode = document.getElementById('root');
     if (rootNode) {
-        const observer = new MutationObserver((mutations) => {
-            injectCustomViews();
-            injectCustomFooter();
-            injectGoogleMapSection();
-            initIntlTelInputs();
-            if (rootNode.children.length > 0 && !document.getElementById('custom-projects-section')) {
-                injectSections();
-                addNavbarLink();
-                handleRouting();
+        let mutTimer = null;
+        const observer = new MutationObserver(() => {
+            if (!document.getElementById('custom-projects-section')) {
+                clearTimeout(mutTimer);
+                mutTimer = setTimeout(tryInjectEverything, 100);
             }
         });
-        observer.observe(rootNode, { childList: true, subtree: true });
-
-        if (rootNode.children.length > 0 && !document.getElementById('custom-projects-section')) {
-            injectSections();
-            addNavbarLink();
-            handleRouting();
-        }
+        observer.observe(rootNode, { childList: true });
     }
 }
 

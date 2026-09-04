@@ -797,47 +797,153 @@ body.page-detail-active #root .App > *:not(header):not(nav):not(.navbar):not(foo
 }
 
 .form-check-custom,
-.form-check,
-label.form-check,
-.form-group-custom .form-check-custom {
+/* KVKK Checkbox & Text Row Layout (Desktop & Mobile) */
+label:has(input[name="kvkk"]),
+label:has(input[type="checkbox"]),
+form label:has(input[type="checkbox"]),
+.col-12 label,
+div.col-12 > label {
     display: flex !important;
     flex-direction: row !important;
-    align-items: center !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+    gap: 12px !important;
+    margin-top: 12px !important;
+    margin-bottom: 20px !important;
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+    color: #334155 !important;
+    cursor: pointer !important;
+}
+
+label:has(input[name="kvkk"]) input[type="checkbox"],
+label:has(input[type="checkbox"]) input[type="checkbox"],
+.col-12 label input[type="checkbox"],
+div.col-12 > label > input[type="checkbox"],
+input[name="kvkk"] {
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    max-width: 20px !important;
+    max-height: 20px !important;
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    appearance: checkbox !important;
+    -webkit-appearance: checkbox !important;
+    cursor: pointer !important;
+    align-self: flex-start !important;
+    float: none !important;
+}
+
+.form-check,
+label.form-check,
+.form-group-custom .form-check-custom,
+.form-group .form-check,
+div.form-check,
+.kvkk-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
     gap: 10px !important;
     margin-bottom: 15px !important;
     cursor: pointer !important;
-}
-
-.form-check-input-custom,
-.form-check-input,
-input[type="checkbox"] {
-    width: 20px !important;
-    height: 20px !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 4px !important;
-    margin: 0 !important;
-    appearance: auto !important;
-    cursor: pointer !important;
-    flex-shrink: 0 !important;
+    width: 100% !important;
 }
 
 .form-check-label-text,
-.form-check-label {
-    display: inline !important;
+.form-check-label,
+label.form-check span,
+.form-check label {
+    display: inline-block !important;
     margin: 0 !important;
-    font-size: 0.93rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.45 !important;
     color: #334155 !important;
+    flex: 1 !important;
 }
 
 .iti {
+    position: relative !important;
+    display: block !important;
     width: 100% !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 15px !important;
+}
+
+.iti input,
+.iti input[type="tel"],
+.iti input[type="text"],
+.iti .form-control,
+input.iti__tel-input,
+form .iti input {
+    padding-left: 95px !important;
+    padding-right: 15px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    height: 50px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+    border: 1px solid #d1d5db !important;
+    background-color: #f9fafb !important;
+    font-size: 0.95rem !important;
+    color: #1f2937 !important;
+    box-shadow: none !important;
+}
+
+.iti input:focus,
+.iti input[type="tel"]:focus,
+.iti input[type="text"]:focus,
+.iti .form-control:focus,
+form .iti input:focus {
+    padding-left: 95px !important;
+    border-color: #14b8a6 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15) !important;
+}
+
+.iti__flag-container,
+.iti__country-container {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 10 !important;
+    padding: 0 0 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.iti__selected-flag {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: transparent !important;
+    padding: 0 8px !important;
+    border-radius: 10px 0 0 10px !important;
+}
+
+.iti__selected-dial-code {
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    font-size: 0.95rem !important;
+    margin-left: 4px !important;
+    display: inline-block !important;
 }
 
 .iti__country-list {
     z-index: 99999 !important;
     color: #0f172a !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+    background-color: #ffffff !important;
 }
 
 .form-check-input-custom:checked::before {

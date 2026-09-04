@@ -326,7 +326,7 @@ function injectCustomViews() {
                 <h2 class="custom-section-title" style="margin-bottom: 30px;">Yönetim Kadromuz</h2>
                 <div class="team-grid" id="full-team-grid"></div>
 
-                <!-- Organizasyon Şeması Buraya Taşındı -->
+                <!-- Organizasyon Şeması Şimdilik Yoruma Alındı
                 <div id="team-org-chart-container" style="margin-top: 60px;">
                     <h2 class="custom-section-title" style="margin-bottom: 30px; text-align:center;">Organizasyon Şeması</h2>
                     <div class="org-chart-wrapper">
@@ -358,6 +358,7 @@ function injectCustomViews() {
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
 
@@ -458,9 +459,9 @@ function injectCustomViews() {
                     <div class="col-lg-4 col-md-6">
                         <div class="social-media-card" style="display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:transform 0.3s; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                             <div style="padding:40px; display:flex; flex-direction:column; height:100%;">
-                                <h2 style="font-size:2rem; font-weight:700; color:#FF0000; margin-bottom:15px;"><i class="bi bi-youtube me-2"></i> YouTube</h2>
+                                <h2 style="font-size:2rem; font-weight:700; color:#FF0000; margin-bottom:15px;">
                                 <p style="font-size:1.1rem; color:#4b5563; margin-bottom:20px;; flex-grow:1;">YÜZAG Bilgilendiriyor videoları, eğitim seminerlerimizin uzun versiyonları, özel röportajlar ve kamp belgesellerimiz için kanalımıza abone olun.</p>
-                                <a href="https://youtube.com" target="_blank" class="btn btn-primary" style="background:#FF0000; border:none; padding:10px 25px; border-radius:30px; font-weight:600;; align-self: flex-start;">Abone Ol <i class="bi bi-arrow-right"></i></a>
+                               
                             </div>
                         </div>
                     </div>
@@ -1267,7 +1268,7 @@ function handleRouting() {
     let hash = window.location.hash.replace('#', '');
     let pathname = window.location.pathname.replace(/^\//, '');
     let route = hash || pathname;
-    
+
     const rootNode = document.getElementById('root');
 
     const views = {
@@ -1282,17 +1283,17 @@ function handleRouting() {
         bagis: document.getElementById('custom-bagis-yap-view')
     };
 
-    const isDetailPage = route === 'ekibimiz' || 
-                         route === 'bilgilendiriyor' || 
-                         route === 'sosyalmedya' || 
-                         route === 'projeler' || 
-                         route === 'duyurular' || 
-                         route === 'gonullu-ol' || 
-                         route === 'genc-gonullu-ol' || 
-                         route === 'bagis-yap' || 
-                         route.startsWith('proje-') || 
-                         route.startsWith('duyuru-') || 
-                         route.startsWith('bilgi-');
+    const isDetailPage = route === 'ekibimiz' ||
+        route === 'bilgilendiriyor' ||
+        route === 'sosyalmedya' ||
+        route === 'projeler' ||
+        route === 'duyurular' ||
+        route === 'gonullu-ol' ||
+        route === 'genc-gonullu-ol' ||
+        route === 'bagis-yap' ||
+        route.startsWith('proje-') ||
+        route.startsWith('duyuru-') ||
+        route.startsWith('bilgi-');
 
     if (rootNode) {
         Array.from(rootNode.children).forEach(child => {
@@ -1468,7 +1469,7 @@ function injectCustomFooter() {
 // 7. Eklenti Başlatıcı (Plugin Init)
 function initProjectsPlugin() {
     console.log("YÜZAG Projeler Eklentisi Başlıyor...");
-    
+
     // Run immediately to inject views & footer
     injectCustomViews();
     injectCustomFooter();
