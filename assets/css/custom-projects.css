@@ -1410,15 +1410,16 @@ form:not(#gonullu-form):not(#genc-gonullu-form) button[type="submit"]:hover {
     box-shadow: 0 6px 18px rgba(20, 184, 166, 0.3) !important;
 }
 
-/* Active Page Indicator in Navigation */
-.navbar-nav .nav-link.active,
-.nav-menu .nav-link.active {
+/* Active Page Indicator in Navigation (Sadece normal metin linkleri için alt çizgi, butonlarda yok) */
+.navbar-nav .nav-link:not(.btn):not(.custom-btn):not(.gonullu-btn-hover):not(.genc-btn-hover):not(.bagis-btn-hover).active,
+.nav-menu .nav-link:not(.btn):not(.custom-btn):not(.gonullu-btn-hover):not(.genc-btn-hover):not(.bagis-btn-hover).active {
     color: #14b8a6 !important;
     font-weight: 700 !important;
     position: relative;
 }
-.navbar-nav .nav-link.active::after,
-.nav-menu .nav-link.active::after {
+
+.navbar-nav .nav-link:not(.btn):not(.custom-btn):not(.gonullu-btn-hover):not(.genc-btn-hover):not(.bagis-btn-hover).active::after,
+.nav-menu .nav-link:not(.btn):not(.custom-btn):not(.gonullu-btn-hover):not(.genc-btn-hover):not(.bagis-btn-hover).active::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -1428,6 +1429,29 @@ form:not(#gonullu-form):not(#genc-gonullu-form) button[type="submit"]:hover {
     background-color: #14b8a6;
     border-radius: 2px;
 }
+
+/* Butonlarda ::after Alt Çizgi Çizgisini Tamamen Kaldır */
+.btn::after,
+.custom-btn::after,
+.gonullu-btn-hover::after,
+.genc-btn-hover::after,
+.bagis-btn-hover::after,
+.btn-footer::after,
+.btn-see-all::after,
+.btn-see-detail::after,
+.btn-back::after,
+.btn-participate::after,
+.form-btn-submit::after,
+.navbar-nav .nav-link.btn::after,
+.navbar-nav .nav-link.custom-btn::after,
+.navbar-nav .nav-link.gonullu-btn-hover::after,
+.navbar-nav .nav-link.genc-btn-hover::after,
+.navbar-nav .nav-link.bagis-btn-hover::after,
+button::after {
+    display: none !important;
+    content: none !important;
+}
+
 .dropdown-menu .dropdown-item.active {
     background-color: rgba(20, 184, 166, 0.1) !important;
     color: #14b8a6 !important;

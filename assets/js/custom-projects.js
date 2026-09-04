@@ -1364,7 +1364,23 @@ function fixAddressLinksAndTexts() {
     const addressText = "Zal Mahmut Paşa külliyesi Nişanca mah., Eyüb, İstanbul, Türkiye";
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=Zal+Mahmut+Pa%C5%9Fa+k%C3%BClliyesi+Ni%C5%9Fanca+mah.+Eyub+Istanbul+Turkey";
 
-    // 1. Replace old Beylikdüzü text with official Eyüpsultan address
+    // 1. İletişim formunun altındaki "Veya, mail gönderin: info@yuzag.org" metnini kaldır
+    document.querySelectorAll('p').forEach(p => {
+        const txt = p.textContent.toLowerCase();
+        if (txt.includes('veya, mail gönderin') || txt.includes('veya mail gönderin') || txt.includes('veya, mail gonderin') || txt.includes('veya mail gonderin')) {
+            p.remove();
+        }
+    });
+
+    // 2. Header üst barındaki (d-flex me-4 mb-0 fs-6 text-white) adresi "Zal Mahmut Paşa..." yaparak harita linki tanımla
+    document.querySelectorAll('.site-header p, header p, p.d-flex.me-4.mb-0').forEach(p => {
+        const txt = p.textContent.toLowerCase();
+        if (txt.includes('beylikdüzü') || txt.includes('beylikduzu') || txt.includes('zal mahmut') || txt.includes('eyüb') || txt.includes('eyub') || txt.includes('nişanca')) {
+            p.innerHTML = `<i class="bi-geo-alt me-2 fs-6"></i><a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="text-white" style="color:#ffffff !important; text-decoration:none !important;">${addressText}</a>`;
+        }
+    });
+
+    // 3. Sayfa genelindeki eski Beylikdüzü metinlerini güncelle
     document.querySelectorAll('*').forEach(el => {
         if (el.children.length === 0 && el.textContent) {
             const txt = el.textContent.toLowerCase();
@@ -1374,7 +1390,7 @@ function fixAddressLinksAndTexts() {
         }
     });
 
-    // 2. Fix <a> tags for address and email
+    // 4. Tüm adres ve mail <a> etiketlerine hedef linklerini bağla
     document.querySelectorAll('a').forEach(a => {
         const text = a.textContent.toLowerCase();
         const href = (a.getAttribute('href') || '').toLowerCase();
@@ -1391,7 +1407,7 @@ function fixAddressLinksAndTexts() {
         }
     });
 
-    // 3. Convert standalone text nodes of email or address into clickable <a> tags safely
+    // 5. Bağımsız adres metinlerini tıklanabilir harita linkine dönüştür
     document.querySelectorAll('p, span, li, small, td').forEach(el => {
         if (el.children.length === 0 && el.parentElement && el.parentElement.tagName !== 'A') {
             const txt = el.textContent.trim();
