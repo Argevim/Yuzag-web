@@ -390,10 +390,16 @@
 
 /* Ekibimiz Sayfası ve Kartları */
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 40px 0;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+    gap: 25px !important;
+    padding: 30px 0 !important;
+}
+
+.team-grid > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
 }
 
 .team-card {
@@ -402,7 +408,7 @@
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .team-card:hover {

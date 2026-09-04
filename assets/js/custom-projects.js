@@ -425,8 +425,7 @@ function injectCustomViews() {
             <div class="container" style="padding: 60px 0 80px 0;">
                 <div class="row gy-4">
                     <!-- Instagram -->
-                    <!-- Instagram -->
-                    <div class="col-lg-6 col-md-6 mb-4">
+                    <div class="col-lg-4 col-md-6 mb-4">
                         <div class="social-media-card" style="display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:transform 0.3s; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                             <div style="padding:40px; display:flex; flex-direction:column; height:100%;">
                                 <h2 style="font-size:2rem; font-weight:700; color:#E1306C; margin-bottom:15px;"><i class="bi bi-instagram me-2"></i> Instagram</h2>
@@ -436,12 +435,22 @@ function injectCustomViews() {
                         </div>
                     </div>
                     <!-- Twitter / X -->
-                    <div class="col-lg-6 col-md-6 mb-4">
+                    <div class="col-lg-4 col-md-6 mb-4">
                         <div class="social-media-card" style="display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:transform 0.3s; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                             <div style="padding:40px; display:flex; flex-direction:column; height:100%;">
                                 <h2 style="font-size:2rem; font-weight:700; color:#1DA1F2; margin-bottom:15px;"><i class="bi bi-twitter-x me-2"></i> Twitter / X</h2>
                                 <p style="font-size:1.1rem; color:#4b5563; margin-bottom:20px; flex-grow:1;">Basın açıklamalarımız, anlık bilgilendirmelerimiz, gündeme dair duruşumuz ve fikir yazılarımız için resmi X hesabımızı takip edebilirsiniz.</p>
                                 <a href="https://x.com/yuzagorgtr" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background:#1DA1F2; border:none; padding:10px 25px; border-radius:30px; font-weight:600; align-self: flex-start;">Takip Et <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Facebook -->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="social-media-card" style="display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:transform 0.3s; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <div style="padding:40px; display:flex; flex-direction:column; height:100%;">
+                                <h2 style="font-size:2rem; font-weight:700; color:#1877F2; margin-bottom:15px;"><i class="bi bi-facebook me-2"></i> Facebook</h2>
+                                <p style="font-size:1.1rem; color:#4b5563; margin-bottom:20px; flex-grow:1;">Faaliyetlerimizi, projelerimizi ve güncel duyurularımızı Facebook sayfamız üzerinden takip edebilirsiniz.</p>
+                                <a href="https://www.facebook.com/yuzagorgtr" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background:#1877F2; border:none; padding:10px 25px; border-radius:30px; font-weight:600; align-self: flex-start;">Takip Et <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -1831,10 +1840,10 @@ function renderTeamPage() {
     const grid = document.getElementById('team-grid') || document.getElementById('full-team-grid');
     if (grid && typeof teamData !== 'undefined') {
         grid.innerHTML = teamData.map(t => `
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4" style="margin: 0px 20px;">
-                <div class="team-card text-center h-100 d-flex flex-column justify-content-center" style="background:#fff; padding:30px 20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid #14b8a6; transition: transform 0.3s ease;">
-                    <h5 style="font-weight:700; color:#0f172a; margin-bottom:8px; font-size:1.1rem;">${t.name}</h5>
-                    <p style="color:#14b8a6; font-weight:600; font-size:0.88rem; margin:0;">${t.role}</p>
+            <div class="team-card text-center d-flex flex-column justify-content-center" style="background:#fff; padding:30px 20px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid #14b8a6; transition: transform 0.3s ease, box-shadow 0.3s ease; min-height: 140px;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 35px rgba(20,184,166,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.05)';">
+                <div class="team-info" style="padding: 0;">
+                    <h5 style="font-weight:700; color:#0f172a; margin-bottom:8px; font-size:1.15rem; line-height:1.4;">${t.name}</h5>
+                    <p style="color:#14b8a6; font-weight:600; font-size:0.9rem; margin:0; line-height:1.4;">${t.role}</p>
                 </div>
             </div>
         `).join('');
@@ -1875,6 +1884,7 @@ function injectCustomFooter() {
                         <div class="footer-social-links">
                             <a href="https://www.instagram.com/yuzagorgtr/?hl=tr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
                             <a href="https://x.com/yuzagorgtr" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                            <a href="https://www.facebook.com/yuzagorgtr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
                         </div>
                     </div>
 
